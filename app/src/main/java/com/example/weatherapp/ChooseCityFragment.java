@@ -46,6 +46,7 @@ public class ChooseCityFragment extends Fragment {
     private CitiesAdapter citiesAdapter;
     private List<City> cities=new ArrayList<>();
     private EditText cityEditText;
+    private RecyclerView recyclerView;
 
 
     @Override
@@ -56,7 +57,7 @@ public class ChooseCityFragment extends Fragment {
                 R.layout.fragment_choosen_cities, container, false);
         cityEditText = ((TextInputLayout) view.findViewById(
                 R.id.cityTextInputLayout)).getEditText();
-        RecyclerView recyclerView =
+         recyclerView =
                 (RecyclerView) view.findViewById(R.id.chooseCityRecyclerView);
         recyclerView.setLayoutManager(
                 new LinearLayoutManager(getActivity().getBaseContext()));
@@ -87,8 +88,16 @@ public class ChooseCityFragment extends Fragment {
                                     cities.clear();
                                     cities = response.body();
                                     citiesAdapter.notifyDataSetChanged();
-//                                    Snackbar.make(getActivity().findViewById(R.id.coordinatorLayout),
-//                                            cities.get(0).getTitle(), Snackbar.LENGTH_LONG).show();
+                                    citiesAdapter = new CitiesAdapter(
+                                            cities,
+                                            new CitiesAdapter.CityClickListener() {
+                                                @Override
+                                                public void onClick(int woeId) {
+                                                    listener.onCitySelected(R.layout.fragment_choosen_cities,woeId);
+                                                }
+                                            }
+                                    );
+                                    recyclerView.setAdapter(citiesAdapter);
                                 }
 
                                 @Override
