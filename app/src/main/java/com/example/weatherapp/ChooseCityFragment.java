@@ -87,17 +87,21 @@ public class ChooseCityFragment extends Fragment {
                                 public void onResponse(Call<List<City>> call, Response<List<City>> response) {
                                     cities.clear();
                                     cities = response.body();
-                                    citiesAdapter.notifyDataSetChanged();
-                                    citiesAdapter = new CitiesAdapter(
-                                            cities,
-                                            new CitiesAdapter.CityClickListener() {
-                                                @Override
-                                                public void onClick(int woeId) {
-                                                    listener.onCitySelected(R.layout.fragment_choosen_cities,woeId);
+//                                    citiesAdapter.notifyDataSetChanged();
+                                        citiesAdapter = new CitiesAdapter(
+                                                cities,
+                                                new CitiesAdapter.CityClickListener() {
+                                                    @Override
+                                                    public void onClick(int woeId) {
+                                                        listener.onCitySelected(R.layout.fragment_choosen_cities, woeId);
+                                                    }
                                                 }
-                                            }
-                                    );
-                                    recyclerView.setAdapter(citiesAdapter);
+                                        );
+                                        recyclerView.setAdapter(citiesAdapter);
+                                    if(cities.size()==0) {
+                                        Snackbar.make(getActivity().findViewById(R.id.coordinatorLayout),
+                                                R.string.no_results, Snackbar.LENGTH_LONG).show();
+                                    }
                                 }
 
                                 @Override
