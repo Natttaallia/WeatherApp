@@ -1,9 +1,7 @@
 package com.example.weatherapp;
 
 import android.content.Context;
-import android.os.AsyncTask;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.design.widget.TextInputLayout;
@@ -14,39 +12,24 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
-import android.widget.Button;
 import android.widget.EditText;
-import android.widget.Toast;
 
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
-
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.net.HttpURLConnection;
-import java.net.URL;
-import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.List;
 
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
-import retrofit2.Retrofit;
-import retrofit2.converter.gson.GsonConverterFactory;
 
 public class ChooseCityFragment extends Fragment {
     public interface ChooseCityFragmentListener {
-        void onCitySelected(int fragment_id,int woeId);
+        void onCitySelected(int woeId);
     }
 
     private ChooseCityFragmentListener listener;
     private CitiesAdapter citiesAdapter;
     private List<City> cities=new ArrayList<>();
     private EditText cityEditText;
-    private RecyclerView recyclerView;
 
 
     @Override
@@ -57,7 +40,7 @@ public class ChooseCityFragment extends Fragment {
                 R.layout.fragment_choosen_cities, container, false);
         cityEditText = ((TextInputLayout) view.findViewById(
                 R.id.cityTextInputLayout)).getEditText();
-         recyclerView =
+        RecyclerView recyclerView =
                 (RecyclerView) view.findViewById(R.id.chooseCityRecyclerView);
         recyclerView.setLayoutManager(
                 new LinearLayoutManager(getActivity().getBaseContext()));
@@ -66,12 +49,11 @@ public class ChooseCityFragment extends Fragment {
                 new CitiesAdapter.CityClickListener() {
                     @Override
                     public void onClick(int woeId) {
-                        listener.onCitySelected(R.layout.fragment_choosen_cities,woeId);
+                        listener.onCitySelected(woeId);
                     }
                 }
         );
         recyclerView.setAdapter(citiesAdapter);
-        recyclerView.addItemDecoration(new ItemDivider(getActivity().getBaseContext()));
         FloatingActionButton fab =
                 (FloatingActionButton) view.findViewById(R.id.findCityFloatingActionButton);
         fab.setOnClickListener(new View.OnClickListener() {
@@ -86,19 +68,9 @@ public class ChooseCityFragment extends Fragment {
                                 @Override
                                 public void onResponse(Call<List<City>> call, Response<List<City>> response) {
                                     cities.clear();
-                                    cities = response.body();
-//                                    citiesAdapter.notifyDataSetChanged();
-                                        citiesAdapter = new CitiesAdapter(
-                                                cities,
-                                                new CitiesAdapter.CityClickListener() {
-                                                    @Override
-                                                    public void onClick(int woeId) {
-                                                        listener.onCitySelected(R.layout.fragment_choosen_cities, woeId);
-                                                    }
-                                                }
-                                        );
-                                        recyclerView.setAdapter(citiesAdapter);
-                                    if(cities.size()==0) {
+                                    cities.addAll(response.body());
+                                    citiesAdapter.notifyDataSetChanged();
+                                      if(cities.size()==0) {
                                         Snackbar.make(getActivity().findViewById(R.id.coordinatorLayout),
                                                 R.string.no_results, Snackbar.LENGTH_LONG).show();
                                     }

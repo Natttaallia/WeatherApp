@@ -47,14 +47,15 @@ public class MainActivity extends AppCompatActivity
         transaction.commit();
     }
     @Override
-    public void onCitySelected(int fragment_id, int woeId) {
+    public void onCitySelected(int woeId) {
+
         WeatherForecastFragment weatherForecastFragment = new WeatherForecastFragment();
         Bundle arguments = new Bundle();
         arguments.putInt(CITY_ID, woeId);
         weatherForecastFragment.setArguments(arguments);
         FragmentTransaction transaction =
                 getSupportFragmentManager().beginTransaction();
-        transaction.replace(fragment_id, weatherForecastFragment);
+        transaction.replace(R.id.fragmentContainer, weatherForecastFragment);
         transaction.addToBackStack(null);
         transaction.commit();
     }

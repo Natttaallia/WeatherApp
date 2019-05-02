@@ -9,7 +9,7 @@ import android.view.ViewGroup;
 
 public class SavedCitiesFragment extends Fragment {
     public interface SavedCitiesFragmentListener {
-        void onCitySelected(int fragment_id, int woeId);
+        void onCitySelected(int woeId);
     }
     private SavedCitiesFragmentListener listener;
 
