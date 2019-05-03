@@ -5,7 +5,7 @@
     <string name="choose_city_text">Choose a city</string>
     <string name="my_city_text">My cities</string>
     <string name="hint_text">Your city</string>
-    <string name="weather_condition_image">A graphical﻿ representation ﻿of ﻿the ﻿weather﻿ conditions</string>
+    <string name="weather_condition_image">Weather icon</string>
 
     <string name="connect_error">Unable to connect to MetaWeather</string>
     <string name="high_temp">High: %s</string>
@@ -15,4 +15,6 @@
     <string name="humidity">Humidity: %s</string>
     <string name="no_results">No results to show</string>
     <string name="wind">Wind: %s</string>
+    <string name="saved_city">Saved</string>
+    <string name="removed_city">Removed</string>
 </resources>

@@ -1,6 +1,7 @@
 package com.example.weatherapp;
 
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
@@ -21,6 +22,8 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
+import static android.content.Context.MODE_PRIVATE;
+
 public class ChooseCityFragment extends Fragment {
     public interface ChooseCityFragmentListener {
         void onCitySelected(int woeId);
@@ -30,6 +33,9 @@ public class ChooseCityFragment extends Fragment {
     private CitiesAdapter citiesAdapter;
     private List<City> cities=new ArrayList<>();
     private EditText cityEditText;
+    private SharedPreferences savedCities;
+    public static final String CITIES = "cities";
+
 
 
     @Override
@@ -40,6 +46,7 @@ public class ChooseCityFragment extends Fragment {
                 R.layout.fragment_choosen_cities, container, false);
         cityEditText = ((TextInputLayout) view.findViewById(
                 R.id.cityTextInputLayout)).getEditText();
+        savedCities = this.getActivity().getSharedPreferences(CITIES, MODE_PRIVATE);
         RecyclerView recyclerView =
                 (RecyclerView) view.findViewById(R.id.chooseCityRecyclerView);
         recyclerView.setLayoutManager(
@@ -51,7 +58,13 @@ public class ChooseCityFragment extends Fragment {
                     public void onClick(int woeId) {
                         listener.onCitySelected(woeId);
                     }
-                }
+
+                    @Override
+                    public void onBtnClick(int woeId, String title) {
+                        saveCity(woeId,title);
+                    }
+                },
+                getResources().getDrawable(R.drawable.ic_save_24dp)
         );
         recyclerView.setAdapter(citiesAdapter);
         FloatingActionButton fab =
@@ -89,6 +102,9 @@ public class ChooseCityFragment extends Fragment {
 
         return view;
     }
+
+
+
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
@@ -104,6 +120,13 @@ public class ChooseCityFragment extends Fragment {
         InputMethodManager imm = (InputMethodManager) getActivity().getSystemService(
                 Context.INPUT_METHOD_SERVICE);
         imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
+    }
+    private void saveCity(int woeId, String title) {
+        SharedPreferences.Editor preferencesEditor = savedCities.edit();
+        preferencesEditor.putInt(title,woeId);
+        preferencesEditor.apply();
+        Snackbar.make(getActivity().findViewById(R.id.coordinatorLayout),
+                R.string.saved_city, Snackbar.LENGTH_LONG).show();
     }
 
 }

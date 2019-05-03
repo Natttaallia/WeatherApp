@@ -28,6 +28,7 @@ import static android.content.ContentValues.TAG;
 public class WeatherForecastAdapter extends RecyclerView.Adapter<WeatherForecastAdapter.ViewHolder> {
 
     private final List<WeatherForecast.Weather> weatherForecast;
+
     public WeatherForecastAdapter(List<WeatherForecast.Weather> w) {
         this.weatherForecast=w;
     }
@@ -77,7 +78,8 @@ public class WeatherForecastAdapter extends RecyclerView.Adapter<WeatherForecast
         holder.tempTextView.setText(c.getString(R.string.temp, w.getTemp()));
         holder.humidityTextView.setText(c.getString(R.string.humidity, w.getHumidity()));
         holder.windTextView.setText(c.getString(R.string.wind, w.getWind()));
-                    NetworkService.getInstance()
+
+            NetworkService.getInstance()
                     .getJSONApi()
                     .loadIcon(w.getAbbr())
                     .enqueue(new Callback<ResponseBody>() {
@@ -96,7 +98,6 @@ public class WeatherForecastAdapter extends RecyclerView.Adapter<WeatherForecast
                             holder.conditionImageView.setImageDrawable(holder.iconBlock);
                         }
                     });
-
     }
 
     @Override

@@ -16,6 +16,7 @@ public class MainActivity extends AppCompatActivity
     private MainActivityFragment mainFragment;
     public static final String CITY_ID = "city_id";
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -59,5 +60,11 @@ public class MainActivity extends AppCompatActivity
         transaction.addToBackStack(null);
         transaction.commit();
     }
+
+    @Override
+    public void deleteCity() {
+        getSupportFragmentManager().popBackStack();
+    }
+
 
 }

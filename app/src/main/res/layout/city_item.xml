@@ -1,9 +1,25 @@
 <?xml version="1.0" encoding="utf-8"?>
-<TextView xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="?android:attr/listPreferredItemHeight"
-    android:id="@+id/textView"
-    android:textAppearance="?android:attr/textAppearanceMedium"
-    android:gravity="center_vertical">
+    android:layout_height="wrap_content"
+    android:orientation="horizontal">
 
-</TextView>
+    <TextView xmlns:android="http://schemas.android.com/apk/res/android"
+        android:id="@+id/textView"
+        android:layout_width="match_parent"
+        android:layout_height="?android:attr/listPreferredItemHeight"
+        android:layout_weight="3"
+        android:gravity="center_vertical"
+        android:textAppearance="?android:attr/textAppearanceMedium">
+
+    </TextView>
+
+    <Button
+        android:id="@+id/btn_save_delete"
+        android:layout_width="@dimen/icon_btn_width"
+        android:layout_height="@dimen/icon_btn_height"
+        android:layout_gravity="center_vertical"
+        android:layout_marginEnd="@dimen/icon_btn_margin"
+        android:layout_weight="1"
+        android:background="@drawable/ic_save_24dp" />
+</LinearLayout>
