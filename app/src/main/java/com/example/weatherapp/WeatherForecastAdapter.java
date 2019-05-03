@@ -4,6 +4,7 @@ import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.drawable.Drawable;
+import android.net.Uri;
 import android.support.design.widget.Snackbar;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -27,9 +28,6 @@ import static android.content.ContentValues.TAG;
 public class WeatherForecastAdapter extends RecyclerView.Adapter<WeatherForecastAdapter.ViewHolder> {
 
     private final List<WeatherForecast.Weather> weatherForecast;
-    private Map<String, Bitmap> bitmaps = new HashMap<>();
-
-
     public WeatherForecastAdapter(List<WeatherForecast.Weather> w) {
         this.weatherForecast=w;
     }
@@ -79,22 +77,15 @@ public class WeatherForecastAdapter extends RecyclerView.Adapter<WeatherForecast
         holder.tempTextView.setText(c.getString(R.string.temp, w.getTemp()));
         holder.humidityTextView.setText(c.getString(R.string.humidity, w.getHumidity()));
         holder.windTextView.setText(c.getString(R.string.wind, w.getWind()));
-//        if (bitmaps.containsKey(w.getAbbr()+".png")) {
-//            holder.conditionImageView.setImageBitmap(
-//                    bitmaps.get(w.getAbbr()+".png"));
-//        }
-//        else {
-            NetworkService.getInstance()
+                    NetworkService.getInstance()
                     .getJSONApi()
-                    .loadIcon(w.getAbbr()+".png")
+                    .loadIcon(w.getAbbr())
                     .enqueue(new Callback<ResponseBody>() {
                         @Override
                         public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                             if (response.isSuccessful() && response.body() != null) {
                                 Bitmap bmp = BitmapFactory.decodeStream(response.body().byteStream());
                                 holder.conditionImageView.setImageBitmap(bmp);
-                                bitmaps.put(response.raw().request().url().toString(), bmp);
-//                                holder.dayTextView.setText(""+response.raw().request().url().to);
                             }
                             else
                                 holder.conditionImageView.setImageDrawable(holder.iconBlock);
@@ -105,7 +96,7 @@ public class WeatherForecastAdapter extends RecyclerView.Adapter<WeatherForecast
                             holder.conditionImageView.setImageDrawable(holder.iconBlock);
                         }
                     });
-//        }
+
     }
 
     @Override
