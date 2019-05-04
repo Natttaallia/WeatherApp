@@ -64,7 +64,8 @@ public class ChooseCityFragment extends Fragment {
                         saveCity(woeId,title);
                     }
                 },
-                getResources().getDrawable(R.drawable.ic_save_24dp)
+                R.drawable.ic_save_24dp,
+                this.getActivity()
         );
         recyclerView.setAdapter(citiesAdapter);
         FloatingActionButton fab =

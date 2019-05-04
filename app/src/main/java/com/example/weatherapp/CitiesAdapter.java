@@ -1,5 +1,6 @@
 package com.example.weatherapp;
 
+import android.content.Context;
 import android.content.SharedPreferences;
 import android.graphics.drawable.Drawable;
 import android.support.design.widget.Snackbar;
@@ -14,20 +15,27 @@ import org.w3c.dom.Text;
 
 import java.util.List;
 
+import static android.content.Context.MODE_PRIVATE;
+
 public class CitiesAdapter extends RecyclerView.Adapter<CitiesAdapter.ViewHolder> {
 
     private final CityClickListener clickListener;
     private final List<City> cities;
     private final Drawable iconBtn;
+    private final Context context;
+    private SharedPreferences savedCities;
+
 
     public interface CityClickListener {
         void onClick(int woeId);
         void onBtnClick(int woeId, String title);
     }
-    public CitiesAdapter(List<City> cities,CityClickListener clickListener, Drawable d) {
+    public CitiesAdapter(List<City> cities,CityClickListener clickListener, int d, Context c) {
         this.clickListener = clickListener;
         this.cities=cities;
-        this.iconBtn=d;
+        this.context=c;
+        this.iconBtn=context.getResources().getDrawable(d);
+
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder {
@@ -38,6 +46,7 @@ public class CitiesAdapter extends RecyclerView.Adapter<CitiesAdapter.ViewHolder
 
         public ViewHolder(final View itemView) {
             super(itemView);
+            savedCities = context.getSharedPreferences(ChooseCityFragment.CITIES, MODE_PRIVATE);
             textView = (TextView) itemView.findViewById(R.id.textView);
             button=(Button)itemView.findViewById(R.id.btn_save_delete);
             button.setBackground(iconBtn);
@@ -76,8 +85,12 @@ public class CitiesAdapter extends RecyclerView.Adapter<CitiesAdapter.ViewHolder
 
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
-        holder.textView.setText(cities.get(position).getTitle());
-        holder.setWoedID(cities.get(position).getWoeId());
+        City city=cities.get(position);
+        holder.textView.setText(city.getTitle());
+        holder.setWoedID(city.getWoeId());
+        if(savedCities.getInt(city.getTitle(),-1)!=-1 && iconBtn.getConstantState().equals(context.getResources().getDrawable(R.drawable.ic_save_24dp).getConstantState()))
+            holder.button.setVisibility(View.GONE);
+
     }
 
     @Override

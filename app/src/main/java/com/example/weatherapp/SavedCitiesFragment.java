@@ -60,7 +60,8 @@ public class SavedCitiesFragment extends Fragment {
                             deleteCity(woeId, title);
                         }
                     },
-                    getResources().getDrawable(R.drawable.ic_delete_24dp)
+                    R.drawable.ic_delete_24dp,
+                    this.getActivity()
             );
             recyclerView.setAdapter(citiesAdapter);
         }
